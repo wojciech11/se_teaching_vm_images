@@ -42,6 +42,8 @@ Next
 
 Whishlist:
 
+- sourcetree alternative - gitg or gitkraken or git-cola
+
 HowTo
 =====
 
