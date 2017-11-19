@@ -1,0 +1,198 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+Vagrant.configure("2") do |config|
+  # The most common configuration options are documented and commented below.
+  # For a complete reference, please see the online documentation at
+  # https://docs.vagrantup.com.
+
+  # Every Vagrant development environment requires a box. You can search for
+  # boxes at https://vagrantcloud.com/search.
+  config.vm.box = "com.github/wojciech11/tester-ubuntu"
+  config.vm.define "tester-ubuntu"
+
+  # Disable automatic box update checking. If you disable this, then
+  # boxes will only be checked for updates when the user runs
+  # `vagrant box outdated`. This is not recommended.
+  # config.vm.box_check_update = false
+
+  # Create a forwarded port mapping which allows access to a specific port
+  # within the machine from a port on the host machine. In the example below,
+  # accessing "localhost:8080" will access port 80 on the guest machine.
+  # NOTE: This will enable public access to the opened port
+  #config.vm.network "forwarded_port", guest: 80, host: 8080
+
+  # Create a forwarded port mapping which allows access to a specific port
+  # within the machine from a port on the host machine and only allow access
+  # via 127.0.0.1 to disable public access
+  # config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
+
+  # Create a private network, which allows host-only access to the machine
+  # using a specific IP.
+  # config.vm.network "private_network", ip: "192.168.33.10"
+
+  # Create a public network, which generally matched to bridged network.
+  # Bridged networks make the machine appear as another physical device on
+  # your network.
+  # config.vm.network "public_network"
+
+  # Share an additional folder to the guest VM. The first argument is
+  # the path on the host to the actual folder. The second argument is
+  # the path on the guest to mount the folder. And the optional third
+  # argument is a set of non-required options.
+  # config.vm.synced_folder "../data", "/vagrant_data"
+
+  # Provider-specific configuration so you can fine-tune various
+  # backing providers for Vagrant. These expose provider-specific options.
+  # Example for VirtualBox:
+  #
+   config.vm.provider "virtualbox" do |vb|
+     # Display the VirtualBox GUI when booting the machine
+     vb.gui = true
+     vb.memory = "4096"
+     vb.name = "tester-ubuntu"
+   end
+
+   config.vm.hostname = "tester-m"
+  
+  # View the documentation for the provider you are using for more
+  # information on available options.
+
+  TESTER_USER="tester"
+  TESTER_PASSWORD="tester"
+
+  tester_dir = <<-SHELL
+    mkdir -p /var/opt/tester
+  SHELL
+  
+  update_apt_get= <<-SHELL
+    apt-get update
+    # apt-get upgrade -qq
+  SHELL
+
+  add_tester_user = <<-SHELL
+  if [ ! -f /var/opt/tester/FLAG_#{TESTER_USER}_CREATED ]; then
+    adduser #{TESTER_USER} --disabled-password --gecos 'student'
+    usermod -a -G sudo #{TESTER_USER}
+    echo "#{TESTER_USER}:#{TESTER_PASSWORD}" | chpasswd
+    touch /var/opt/tester/FLAG_#{TESTER_USER}_CREATED
+  fi
+  SHELL
+
+  install_pip = <<-SHELL
+    if [ ! -f /var/opt/tester/FLAG_PIP_INSTALLED ]; then
+      apt-get install python-pip -qq
+      touch /var/opt/tester/FLAG_PIP_INSTALLED
+    fi
+  SHELL
+
+  install_dockerce = <<-SHELL
+     if [ ! -f /var/opt/tester/FLAG_DOCKER_INSTALLED ]; then
+       apt-get update;
+       apt-get install -y apt-transport-https ca-certificates curl software-properties-common ;
+       curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - ;
+       add-apt-repository 'deb [arch=amd64] https://download.docker.com/linux/ubuntu '$(lsb_release -cs)' stable' ;
+       apt-get update 
+       apt-get install -qq docker-ce ;
+       touch /var/opt/tester/FLAG_DOCKER_INSTALLED
+     fi
+   SHELL
+
+   install_atom = <<-SHELL
+      if [ ! -f /var/opt/tester/FLAG_ATOM_INSTALLED ]; then
+        add-apt-repository ppa:webupd8team/atom
+        apt update; sudo apt-get -qq install atom
+        touch /var/opt/tester/FLAG_ATOM_INSTALLED
+      fi;
+   SHELL
+
+   install_nodejs = <<-SHELL
+    echo "TODO: add NPM installer"
+   SHELL
+
+   install_chrome = <<-SHELL
+    if [ ! -f /var/opt/tester/FLAG_CHROME_INSTALLED ]; then
+      wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+      dpkg -i google-chrome-stable_current_amd64.deb
+      apt-get -f install -qq
+      rm google-chrome-stable_current_amd64.deb
+      touch /var/opt/tester/FLAG_CHROME_INSTALLED
+      fi;
+   SHELL
+
+   install_postman = <<-SHELL
+    if [ ! -f /usr/bin/postman ]; then
+      wget https://dl.pstmn.io/download/latest/linux64 -O postman.tar.gz && \
+      tar -xzf postman.tar.gz -C /opt && \
+      ln -s /opt/Postman/Postman /usr/bin/postman && \
+      rm -f postman.tar.gz
+    fi;
+   SHELL
+
+   install_postman_shortcut = <<-SHELL
+    if [ ! -f /home/#{TESTER_USER}/.local/share/applications/postman.desktop ]; then
+    mkdir -p /home/#{TESTER_USER}/.local/share/applications/
+    cat >/home/#{TESTER_USER}/.local/share/applications/postman.desktop <<EOL
+Encoding=UTF-8
+Name=Postman
+Exec=postman
+Icon=/opt/Postman/resources/app/assets/icon.png
+Terminal=false
+Type=Application
+Categories=Development;
+EOL
+    fi;
+    chown -R #{TESTER_USER}:#{TESTER_USER} /home/#{TESTER_USER}/.local
+   SHELL
+
+   install_jdk = <<-SHELL
+      apt-get install openjdk-8-jre -qq
+   SHELL
+
+  install_android_studio = <<-SHELL
+   if [ ! -f /home/#{TESTER_USER}/android-studio ]; then
+       wget https://dl.google.com/dl/android/studio/ide-zips/3.0.0.18/android-studio-ide-171.4408382-linux.zip
+       unzip android-studio-ide-171.4408382-linux.zip
+       mv android-studio /home/#{TESTER_USER}
+       rm android-studio-ide-171.4408382-linux.zip
+       chown #{TESTER_USER}:#{TESTER_USER} /home/#{TESTER_USER}/android-studio -R
+   fi;
+   SHELL
+
+   disable_amazon_app = <<-SHELL
+     echo 'Hidden=true' | cat /usr/share/applications/ubuntu-amazon-default.desktop - > /home/#{TESTER_USER}/.local/share/applications/ubuntu-amazon-default.desktop
+   SHELL
+
+   cleanup_cache = <<-SHELL
+     rm -rf /var/lib/apt/lists/*
+   SHELL
+
+   disable_desktop_autologin = <<-SHELL
+    sed -i -e'' 's/AutomaticLoginEnable=[tT]rue/AutomaticLoginEnable=False/g' /etc/gdm/custom.conf
+    sed -i -e'' 's/AutomaticLoginEnable=vagrant/AutomaticLoginEnable=#{TESTER_USER}/g' /etc/gdm/custom.conf
+   SHELL
+
+   for s in [tester_dir,
+             update_apt_get,
+             add_tester_user,
+             install_pip,
+             install_dockerce,
+             install_atom,
+             install_chrome,
+             install_postman,
+             install_postman_shortcut,
+             install_nodejs,
+             install_jdk,
+             install_android_studio,
+             disable_amazon_app,
+             cleanup_cache,
+             disable_desktop_autologin] 
+
+     config.vm.provision "shell", inline: s
+    end
+
+end
