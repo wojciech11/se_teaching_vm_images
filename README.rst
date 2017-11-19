@@ -43,6 +43,9 @@ Next
 Whishlist:
 
 - sourcetree alternative - gitg or gitkraken or git-cola
+- better bash look&feel [centos] - consider to use bash-it
+- soapui - 
+- docker-compose -
 
 HowTo
 =====
