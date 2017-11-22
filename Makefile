@@ -52,7 +52,7 @@ centos_desktop_as_ovf:
 
 ubuntu_convert_to_vhd:
 	if [ ! -f build/tester-ubuntu-disk001.vmdk ]; then cd build && tar xvf tester-ubuntu.ova && cd .. ; fi;
-	#vboxmanage clonehd --format vhd build/tester-ubuntu-disk001.vmdk build/tester-ubuntu.vhd
+	vboxmanage clonehd --format vhd build/tester-ubuntu-disk001.vmdk build/tester-ubuntu.vhd
 
 centos_convert_to_vhd:
 	if [ ! -f build/tester-centos-disk001.vmdk ]; then cd build && tar xvf tester-centos.ova && cd .. ; fi;
