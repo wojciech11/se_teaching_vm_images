@@ -91,3 +91,10 @@ HowTo
 
      make centos_desktop_as_ovf
      make ubuntu_desktop_as_ovf
+
+7. Transform ova to vhd (for Hyper-V):
+
+    ::
+
+      make ubuntu_convert_to_vhd
+      make centos_convert_to_vhd
