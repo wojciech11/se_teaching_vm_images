@@ -1,3 +1,4 @@
 boxcutter/*
 vagrant/*/.vagrant/*
 build/*
+vagrant/*/*.box

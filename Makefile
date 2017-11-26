@@ -46,6 +46,12 @@ ubuntu_desktop_as_ovf:
 	vboxmanage export tester-ubuntu \
 	   -o build/tester-ubuntu.ova
 
+centos_desktop_get_box:
+	cd vagrant/centos && vagrant package
+
+ubuntu_desktop_get_box:
+	cd vagrant/ubuntu && vagrant package
+
 centos_desktop_as_ovf:
 	vboxmanage export tester-centos \
 	   -o build/tester-centos.ova

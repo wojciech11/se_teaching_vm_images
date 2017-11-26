@@ -29,6 +29,7 @@ Development:
 - python2
 - python2-pip
 - openjdk1.8
+- gitg and gitk
 
 Browsers:
 
@@ -42,7 +43,7 @@ Next
 
 Whishlist:
 
-- sourcetree alternative - gitg or gitkraken or git-cola
+- sourcetree alternative - gitkraken
 - better bash look&feel [centos] - consider to use bash-it
 - soapui - 
 - docker-compose -
@@ -85,14 +86,21 @@ HowTo
      make centos_desktop_vagrant_halt
      make ubuntu_desktop_vagrant_halt
 
-6. Export the box as a OVF to the *build* directory:
+6. Get vagrant boxes:
+
+   ::
+
+     make centos_desktop_get_box
+     make ubuntu_desktop_get_box
+
+7. Export the box as a OVF to the *build* directory:
 
    ::
 
      make centos_desktop_as_ovf
      make ubuntu_desktop_as_ovf
 
-7. Transform ova to vhd (for Hyper-V):
+8. Transform ova to vhd (for Hyper-V):
 
     ::
 
