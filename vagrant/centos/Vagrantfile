@@ -96,7 +96,7 @@ Vagrant.configure("2") do |config|
   # gitk is more advanced
   install_git_gui = <<-SHELL
     if [ ! -f /var/opt/tester/FLAG_GIT_GUI_INSTALLED ]; then
-      yum -y install gitg &&
+      yum -y install gitg && \
       yum -y install gitk && \
       touch /var/opt/tester/FLAG_GIT_GUI_INSTALLED
     fi
