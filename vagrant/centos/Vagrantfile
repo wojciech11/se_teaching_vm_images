@@ -86,8 +86,19 @@ Vagrant.configure("2") do |config|
 
   install_pip = <<-SHELL
     if [ ! -f /var/opt/tester/FLAG_PIP_INSTALLED ]; then
-      yum -y install python-pip && 
+      yum -y install python-pip && \
+      pip install -U pip && \
       touch /var/opt/tester/FLAG_PIP_INSTALLED
+    fi
+  SHELL
+
+  # gitg is the simplest gui for learnig
+  # gitk is more advanced
+  install_git_gui = <<-SHELL
+    if [ ! -f /var/opt/tester/FLAG_GIT_GUI_INSTALLED ]; then
+      yum -y install gitg &&
+      yum -y install gitk && \
+      touch /var/opt/tester/FLAG_GIT_GUI_INSTALLED
     fi
   SHELL
 
@@ -158,7 +169,7 @@ EOF
    SHELL
 
    install_android_studio = <<-SHELL
-   if [ ! -f /home/#{TESTER_USER}/android-studio ]; then
+   if [ ! -d /home/#{TESTER_USER}/android-studio ]; then
        wget https://dl.google.com/dl/android/studio/ide-zips/3.0.0.18/android-studio-ide-171.4408382-linux.zip
        unzip android-studio-ide-171.4408382-linux.zip
        mv android-studio /home/#{TESTER_USER}
@@ -176,6 +187,7 @@ EOF
              update_packages,
              add_tester_user,
              install_pip,
+             install_git_gui,
              install_dockerce,
              install_atom,
              install_chrome,
