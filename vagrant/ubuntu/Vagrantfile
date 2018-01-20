@@ -116,7 +116,8 @@ Vagrant.configure("2") do |config|
    install_atom = <<-SHELL
       if [ ! -f /var/opt/tester/FLAG_ATOM_INSTALLED ]; then
         add-apt-repository ppa:webupd8team/atom
-        apt update; sudo apt-get -qq install atom
+        apt-get update;
+        apt-get -qq install atom
         touch /var/opt/tester/FLAG_ATOM_INSTALLED
       fi;
    SHELL
