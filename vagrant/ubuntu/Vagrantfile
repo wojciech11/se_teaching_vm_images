@@ -103,11 +103,11 @@ Vagrant.configure("2") do |config|
 
   install_dockerce = <<-SHELL
      if [ ! -f /var/opt/tester/FLAG_DOCKER_INSTALLED ]; then
-       apt-get update;
-       apt-get install -y apt-transport-https ca-certificates curl software-properties-common ;
+       apt-get update ;
+       apt-get install -qq apt-transport-https ca-certificates curl software-properties-common ;
        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - ;
        add-apt-repository 'deb [arch=amd64] https://download.docker.com/linux/ubuntu '$(lsb_release -cs)' stable' ;
-       apt-get update 
+       apt-get update ;
        apt-get install -qq docker-ce ;
        touch /var/opt/tester/FLAG_DOCKER_INSTALLED
      fi
