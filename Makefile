@@ -1,4 +1,4 @@
-IMAGE_UBUNTU=ubuntu1604-desktop
+IMAGE_UBUNTU=ubuntu1804-desktop
 IMAGE_CENTOS=centos7-desktop
 
 DEFAULT_USERNAME=tester
@@ -28,7 +28,7 @@ centos_desktop_import:
 	vagrant box add boxcutter/centos/box/virtualbox/$(IMAGE_CENTOS)*.box --name $(VAGRANT_NAME_PREFIX)/tester-centos
 
 ubuntu_desktop_import:
-	vagrant box add boxcutter/ubuntu/box/virtualbox/$(IMAGE_UBUNTU)*.box --name $(VAGRANT_NAME_PREFIX)/tester-ubuntu
+	vagrant box add boxcutter/ubuntu/box/virtualbox/$(IMAGE_UBUNTU)*.box --name $(VAGRANT_NAME_PREFIX)/tester-ubuntu --force
 
 ubuntu_desktop_vagrant_up:
 	cd vagrant/ubuntu && vagrant up

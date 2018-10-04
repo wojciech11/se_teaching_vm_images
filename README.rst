@@ -63,6 +63,13 @@ HowTo
      make get_boxcutter_centos
      make get_boxcutter_ubuntu
 
+   For ubuntu 18.04 desktop:
+
+   ::
+
+     cp boxcutter-ubuntu-18/ubuntu1804-desktop.json  boxcutter/ubuntu
+     cp boxcutter-ubuntu-18/vagrantfile-ubuntu1804-desktop.tpl boxcutter/ubuntu/tpl
+
 2. Build base images:
 
    ::
