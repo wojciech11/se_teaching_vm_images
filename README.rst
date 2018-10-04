@@ -77,6 +77,8 @@ HowTo
      make centos_desktop_build
      make ubuntu_desktop_build
 
+   For ubuntu 18.04 desktop: You need manually click-through the installer (vagrant:vagrant), login, apt-get update/upgrade and install openssh-server.
+
 3. Run the images with vagrant to customize them:
 
    ::
