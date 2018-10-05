@@ -79,37 +79,44 @@ HowTo
 
    For ubuntu 18.04 desktop: You need manually click-through the installer (vagrant:vagrant), login, apt-get update/upgrade and install openssh-server.
 
-3. Run the images with vagrant to customize them:
+3. Import the base imaage:
+
+   ::
+
+     make ubuntu_desktop_import
+     make centos_desktop+import
+
+4. Run the images with vagrant to customize them:
 
    ::
 
      make centos_desktop_vagrant_up
      make ubuntu_desktop_vagrant_up
 
-4. You can also customize the images manually
+5. You can also customize the images manually
 
-5. Stop the vagrant box
+6. Stop the vagrant box
 
    ::
 
      make centos_desktop_vagrant_halt
      make ubuntu_desktop_vagrant_halt
 
-6. Get vagrant boxes:
+7. Get vagrant boxes:
 
    ::
 
      make centos_desktop_get_box
      make ubuntu_desktop_get_box
 
-7. Export the box as a OVF to the *build* directory:
+8. Export the box as a OVF to the *build* directory:
 
    ::
 
      make centos_desktop_as_ovf
      make ubuntu_desktop_as_ovf
 
-8. Transform ova to vhd (for Hyper-V):
+9. Transform ova to vhd (for Hyper-V):
 
     ::
 
