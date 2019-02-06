@@ -7,7 +7,10 @@ DEFAULT_PASSWORD=tester
 VAGRANT_NAME_PREFIX=com.github/wojciech11
 
 get_boxcutter_ubuntu:
-	cd boxcutter && git clone https://github.com/boxcutter/ubuntu
+	cd boxcutter && \
+	rm -rf ubuntu && \
+	git clone https://github.com/boxcutter/ubuntu && \
+	git checkout 339e122
 	
 get_boxcutter_centos:
 	cd boxcutter && git clone https://github.com/boxcutter/centos

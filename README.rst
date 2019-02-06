@@ -28,7 +28,6 @@ Development:
 - Andorid Studio
 - python2
 - python2-pip
-- openjdk1.8
 - gitg and gitk
 
 Browsers:
@@ -63,13 +62,6 @@ HowTo
      make get_boxcutter_centos
      make get_boxcutter_ubuntu
 
-   For ubuntu 18.04 desktop:
-
-   ::
-
-     cp boxcutter-ubuntu-18/ubuntu1804-desktop.json  boxcutter/ubuntu
-     cp boxcutter-ubuntu-18/vagrantfile-ubuntu1804-desktop.tpl boxcutter/ubuntu/tpl
-
 2. Build base images:
 
    ::
@@ -84,7 +76,7 @@ HowTo
    ::
 
      make ubuntu_desktop_import
-     make centos_desktop+import
+     make centos_desktop_import
 
 4. Run the images with vagrant to customize them:
 

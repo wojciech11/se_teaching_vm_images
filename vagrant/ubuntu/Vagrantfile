@@ -13,7 +13,7 @@ Vagrant.configure("2") do |config|
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
   config.vm.box = "com.github/wojciech11/tester-ubuntu"
-  config.vm.define "tester-ubuntu"
+  config.vm.define "tester-ubuntu-2"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -54,7 +54,7 @@ Vagrant.configure("2") do |config|
      # Display the VirtualBox GUI when booting the machine
      vb.gui = true
      vb.memory = "4096"
-     vb.name = "tester-ubuntu"
+     vb.name = "tester-ubuntu-2"
    end
 
    config.vm.hostname = "tester-m"
@@ -165,8 +165,8 @@ EOL
       apt-get install openjdk-8-jre -qq
    SHELL
 
-# better that the studens do it manually
-# notice: the url is incorrect
+# better when the students do it by hand
+# notice: the url is incorrect, check the android-studio version on their website
   install_android_studio = <<-SHELL
    if [ ! -d /home/#{TESTER_USER}/android-studio ]; then
        wget https://dl.google.com/dl/android/studio/ide-zips/3.0.0.18/android-studio-ide-171.4408382-linux.zip
@@ -182,15 +182,14 @@ EOL
 #     echo 'Hidden=true' | cat /usr/share/applications/ubuntu-amazon-default.desktop - > /home/#{TESTER_USER}/.local/share/applications/ubuntu-amazon-default.desktop
 #   SHELL
 
+   disable_desktop_autologin = <<-SHELL
+    sed -i -e'' 's/AutomaticLoginEnable = [tT]rue/AutomaticLoginEnable = False/g' /etc/gdm3/custom.conf
+    sed -i -e'' 's/AutomaticLogin = vagrant/AutomaticLogin = #{TESTER_USER}/g' /etc/gdm3/custom.conf
+   SHELL
+
    cleanup_cache = <<-SHELL
      rm -rf /var/lib/apt/lists/*
    SHELL
-
-# not needed in ubuntu 18.04
-#  disable_desktop_autologin = <<-SHELL
-#   sed -i -e'' 's/AutomaticLoginEnable=[tT]rue/AutomaticLoginEnable=False/g' /etc/gdm/custom.conf
-#   sed -i -e'' 's/AutomaticLoginEnable=vagrant/AutomaticLoginEnable=#{TESTER_USER}/g' /etc/gdm/custom.conf
-#  SHELL
 
    for s in [tester_dir,
              update_apt_get,
@@ -203,7 +202,8 @@ EOL
              install_postman,
              install_postman_shortcut,
              install_nodejs,
-             install_jdk,
+             disable_desktop_autologin,
+             #install_jdk,
              # disable_amazon_app, # not needed in ubuntu 18.04
              cleanup_cache
              ] 
