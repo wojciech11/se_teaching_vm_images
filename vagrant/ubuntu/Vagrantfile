@@ -13,7 +13,7 @@ Vagrant.configure("2") do |config|
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
   config.vm.box = "com.github/wojciech11/tester-ubuntu"
-  config.vm.define "tester-ubuntu-2"
+  config.vm.define "tester-ubuntu"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -54,7 +54,7 @@ Vagrant.configure("2") do |config|
      # Display the VirtualBox GUI when booting the machine
      vb.gui = true
      vb.memory = "4096"
-     vb.name = "tester-ubuntu-2"
+     vb.name = "tester-ubuntu"
    end
 
    config.vm.hostname = "tester-m"
