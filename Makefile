@@ -1,68 +1,47 @@
-IMAGE_UBUNTU=ubuntu1804-desktop
-IMAGE_CENTOS=centos7-desktop
-
 DEFAULT_USERNAME=tester
 DEFAULT_PASSWORD=tester
 
-VAGRANT_NAME_PREFIX=com.github/wojciech11
+BOXCUTTER_PATH=boxcutter/ubuntu
+BOXCUTTER_TEMPLATE=ubuntu1604-desktop
 
-get_boxcutter_ubuntu:
+VAGRANT_IMAGE_PREFIX=com.github/wojciech11
+VAGRANT_IMAGE_NAME=tester-xubuntu16
+
+
+boxcutter_clone_ubuntu:
 	cd boxcutter && \
 	rm -rf ubuntu && \
 	git clone https://github.com/boxcutter/ubuntu && \
-	git checkout 339e122
-	
-get_boxcutter_centos:
-	cd boxcutter && git clone https://github.com/boxcutter/centos
+	git checkout 339e1227686b44e499eac49f163783d1b588dbfb
 
-centos_desktop_build:
-	UPDATE=true && \
-	cd boxcutter/centos && \
-	bin/box build $(IMAGE_CENTOS) virtualbox ; \
-	ls box/virtualbox/
+boxcutter_apply_changes:
+	cp -R boxcutter-ubuntu-xfce/ubuntu/* $(BOXCUTTER_PATH)
 
-ubuntu_desktop_build:
+ubuntu_desktop_build: boxcutter_apply_changes
 	UPDATE=true && \
-	cd boxcutter/ubuntu && \
-	bin/box build $(IMAGE_UBUNTU) virtualbox ; \
+	cd $(BOXCUTTER_PATH) && \
+	bin/box build $(BOXCUTTER_TEMPLATE) virtualbox ; \
 	ls box/virtualbox
 
-centos_desktop_import:
-	vagrant box add boxcutter/centos/box/virtualbox/$(IMAGE_CENTOS)*.box --name $(VAGRANT_NAME_PREFIX)/tester-centos
-
 ubuntu_desktop_import:
-	vagrant box add boxcutter/ubuntu/box/virtualbox/$(IMAGE_UBUNTU)*.box --name $(VAGRANT_NAME_PREFIX)/tester-ubuntu --force
+	vagrant box add \
+		boxcutter/ubuntu/box/virtualbox/$(BOXCUTTER_TEMPLATE)*.box \
+		--name $(VAGRANT_IMAGE_PREFIX)/$(VAGRANT_IMAGE_NAME) \
+	    --force
 
 ubuntu_desktop_vagrant_up:
 	cd vagrant/ubuntu && vagrant up
 
-centos_desktop_vagrant_up:
-	cd vagrant/centos && vagrant up
-
 ubuntu_desktop_vagrant_halt:
 	cd vagrant/ubuntu && vagrant halt
 
-centos_desktop_vagrant_halt:
-	cd vagrant/centos && vagrant halt
-
 ubuntu_desktop_as_ovf:
-	vboxmanage export tester-ubuntu \
-	   -o build/tester-ubuntu.ova
-
-centos_desktop_get_box:
-	cd vagrant/centos && vagrant package
+	vboxmanage export tester-xubuntu16 \
+	   -o build/tester-xubuntu16.ova
 
 ubuntu_desktop_get_box:
 	cd vagrant/ubuntu && vagrant package
 
-centos_desktop_as_ovf:
-	vboxmanage export tester-centos \
-	   -o build/tester-centos.ova
-
 ubuntu_convert_to_vhd:
 	if [ ! -f build/tester-ubuntu-disk001.vmdk ]; then cd build && tar xvf tester-ubuntu.ova && cd .. ; fi;
 	vboxmanage clonehd --format vhd build/tester-ubuntu-disk001.vmdk build/tester-ubuntu.vhd
-
-centos_convert_to_vhd:
-	if [ ! -f build/tester-centos-disk001.vmdk ]; then cd build && tar xvf tester-centos.ova && cd .. ; fi;
-	vboxmanage clonehd --format vhd build/tester-centos-disk001.vmdk build/tester-centos.vhd

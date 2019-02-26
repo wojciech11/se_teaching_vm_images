@@ -59,14 +59,13 @@ HowTo
 
    ::
 
-     make get_boxcutter_centos
-     make get_boxcutter_ubuntu
+     make boxcutter_clone_ubuntu
+     make boxcutter_apply_changes
 
 2. Build base images:
 
    ::
 
-     make centos_desktop_build
      make ubuntu_desktop_build
 
    For ubuntu 18.04 desktop: You need manually click-through the installer (vagrant:vagrant), login, apt-get update/upgrade and install openssh-server.
@@ -76,13 +75,11 @@ HowTo
    ::
 
      make ubuntu_desktop_import
-     make centos_desktop_import
 
 4. Run the images with vagrant to customize them:
 
    ::
 
-     make centos_desktop_vagrant_up
      make ubuntu_desktop_vagrant_up
 
 5. You can also customize the images manually
@@ -91,21 +88,18 @@ HowTo
 
    ::
 
-     make centos_desktop_vagrant_halt
      make ubuntu_desktop_vagrant_halt
 
 7. Get vagrant boxes:
 
    ::
 
-     make centos_desktop_get_box
      make ubuntu_desktop_get_box
 
 8. Export the box as a OVF to the *build* directory:
 
    ::
 
-     make centos_desktop_as_ovf
      make ubuntu_desktop_as_ovf
 
 9. Transform ova to vhd (for Hyper-V):
@@ -113,4 +107,3 @@ HowTo
     ::
 
       make ubuntu_convert_to_vhd
-      make centos_convert_to_vhd
