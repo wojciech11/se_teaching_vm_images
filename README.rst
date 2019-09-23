@@ -60,7 +60,18 @@ HowTo
    ::
 
      make boxcutter_clone_ubuntu
+     # if you prefer xubuntu
+     make boxcutter_apply_changes_xubuntu
+     
+     # stay ubuntu
      make boxcutter_apply_changes
+
+   Change accordingly in Makefile:
+
+   ::
+
+     BOXCUTTER_TEMPLATE=ubuntu1804-desktop # ubuntu1604-desktop
+     VAGRANT_IMAGE_NAME=tester-xubuntu18 # tester-xubuntu16
 
 2. Build base images:
 

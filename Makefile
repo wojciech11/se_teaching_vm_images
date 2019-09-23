@@ -2,22 +2,22 @@ DEFAULT_USERNAME=tester
 DEFAULT_PASSWORD=tester
 
 BOXCUTTER_PATH=boxcutter/ubuntu
-BOXCUTTER_TEMPLATE=ubuntu1604-desktop
+# ubuntu1604-desktop
+BOXCUTTER_TEMPLATE=ubuntu1804-desktop
 
 VAGRANT_IMAGE_PREFIX=com.github/wojciech11
-VAGRANT_IMAGE_NAME=tester-xubuntu16
 
+VAGRANT_IMAGE_NAME=tester-ubuntu18
 
 boxcutter_clone_ubuntu:
 	cd boxcutter && \
 	rm -rf ubuntu && \
-	git clone https://github.com/boxcutter/ubuntu && \
-	git checkout 339e1227686b44e499eac49f163783d1b588dbfb
+	git clone https://github.com/boxcutter/ubuntu
 
 boxcutter_apply_changes:
-	cp -R boxcutter-ubuntu-xfce/ubuntu/* $(BOXCUTTER_PATH)
+	cp -R boxcutter-ubuntu/ubuntu/* $(BOXCUTTER_PATH)
 
-ubuntu_desktop_build: boxcutter_apply_changes
+ubuntu_desktop_build:
 	UPDATE=true && \
 	cd $(BOXCUTTER_PATH) && \
 	bin/box build $(BOXCUTTER_TEMPLATE) virtualbox ; \
