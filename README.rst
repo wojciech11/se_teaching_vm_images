@@ -26,8 +26,8 @@ Development:
 - docker-ce
 - postman - run postman & in terminal
 - Andorid Studio
-- python2
-- python2-pip
+- python3
+- python3-pip
 - gitg and gitk
 
 Browsers:
@@ -60,8 +60,7 @@ HowTo
    ::
 
      make boxcutter_clone_ubuntu
-     # if you prefer xubuntu
-     make boxcutter_apply_changes_xubuntu
+     make boxcutter_apply_changes
      
      # stay ubuntu
      make boxcutter_apply_changes
@@ -70,16 +69,14 @@ HowTo
 
    ::
 
-     BOXCUTTER_TEMPLATE=ubuntu1804-desktop # ubuntu1604-desktop
-     VAGRANT_IMAGE_NAME=tester-xubuntu18 # tester-xubuntu16
+     BOXCUTTER_TEMPLATE=ubuntu2004-desktop
+     VAGRANT_IMAGE_NAME=tester-ubuntu20
 
 2. Build base images:
 
    ::
 
      make ubuntu_desktop_build
-
-   For ubuntu 18.04 desktop: You need manually click-through the installer (vagrant:vagrant), login, apt-get update/upgrade and install openssh-server.
 
 3. Import the base imaage:
 
@@ -91,6 +88,7 @@ HowTo
 
    ::
 
+     vagrant plugin install vagrant-disksize
      make ubuntu_desktop_vagrant_up
 
 5. You can also customize the images manually
@@ -107,14 +105,7 @@ HowTo
 
      make ubuntu_desktop_get_box
 
-8. Export the box as a OVF to the *build* directory:
+8. Remove:
 
-   ::
-
-     make ubuntu_desktop_as_ovf
-
-9. Transform ova to vhd (for Hyper-V):
-
-    ::
-
-      make ubuntu_convert_to_vhd
+   - mounting /vagrant in /etc/fstab
+   - disable remote display

@@ -3,11 +3,11 @@ DEFAULT_PASSWORD=tester
 
 BOXCUTTER_PATH=boxcutter/ubuntu
 # ubuntu1604-desktop
-BOXCUTTER_TEMPLATE=ubuntu1804-desktop
+BOXCUTTER_TEMPLATE=ubuntu2004-desktop
 
 VAGRANT_IMAGE_PREFIX=com.github/wojciech11
 
-VAGRANT_IMAGE_NAME=tester-ubuntu18
+VAGRANT_IMAGE_NAME=tester-ubuntu20
 
 boxcutter_clone_ubuntu:
 	cd boxcutter && \

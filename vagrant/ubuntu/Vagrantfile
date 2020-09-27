@@ -12,8 +12,9 @@ Vagrant.configure("2") do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
-  config.vm.box = "com.github/wojciech11/tester-ubuntu18"
-  config.vm.define "tester-ubuntu-v2"
+  config.vm.box = "com.github/wojciech11/tester-ubuntu20"
+  config.vm.define "tester-ubuntu-v3"
+  config.disksize.size = '120GB'
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -53,8 +54,12 @@ Vagrant.configure("2") do |config|
    config.vm.provider "virtualbox" do |vb|
      # Display the VirtualBox GUI when booting the machine
      vb.gui = true
-     vb.memory = "4096"
-     vb.name = "tester-ubuntu18"
+     vb.memory = "8092"
+     vb.name = "tester-ubuntu20"
+     vb.customize ['modifyvm', :id, '--accelerate3d', 'on']
+     vb.customize ["modifyvm", :id, "--vram", "128"]
+     vb.customize ['modifyvm', :id, '--graphicscontroller', 'vboxsvga']
+     vb.customize ['modifyvm', :id, '--clipboard', 'bidirectional']
    end
 
    config.vm.hostname = "tester-m"
@@ -85,8 +90,8 @@ Vagrant.configure("2") do |config|
 
   install_pip = <<-SHELL
     if [ ! -f /var/opt/tester/FLAG_PIP_INSTALLED ]; then
-      apt-get install python-pip -qq && \
-      pip install -U pip && \
+      apt-get install python3-pip -qq && \
+      pip3 install -U pip;
       touch /var/opt/tester/FLAG_PIP_INSTALLED
     fi
   SHELL
@@ -115,9 +120,7 @@ Vagrant.configure("2") do |config|
 
    install_atom = <<-SHELL
       if [ ! -f /var/opt/tester/FLAG_ATOM_INSTALLED ]; then
-        add-apt-repository ppa:webupd8team/atom
-        apt-get update;
-        apt-get -qq install atom
+        snap install atom --classic
         touch /var/opt/tester/FLAG_ATOM_INSTALLED
       fi;
    SHELL
@@ -141,19 +144,11 @@ Vagrant.configure("2") do |config|
     fi;
    SHELL
 
-   install_jdk = <<-SHELL
-      apt-get install openjdk-8-jre -qq
-   SHELL
-
 # better when the students do it by hand
 # notice: the url is incorrect, check the android-studio version on their website
   install_android_studio = <<-SHELL
    if [ ! -d /home/#{TESTER_USER}/android-studio ]; then
-       wget https://dl.google.com/dl/android/studio/ide-zips/3.0.0.18/android-studio-ide-171.4408382-linux.zip
-       unzip android-studio-ide-171.4408382-linux.zip
-       mv android-studio /home/#{TESTER_USER}
-       rm android-studio-ide-171.4408382-linux.zip
-       chown #{TESTER_USER}:#{TESTER_USER} /home/#{TESTER_USER}/android-studio -R
+     sudo snap install android-studio --classic
    fi;
    SHELL
 
@@ -177,7 +172,6 @@ Vagrant.configure("2") do |config|
              install_chrome,
              install_postman,
              # install_postman_shortcut,
-             # install_jdk,
              # install_android_studio, # check ^
              "apt-get remove -y apport", # disable error reports
              disable_desktop_autologin,
