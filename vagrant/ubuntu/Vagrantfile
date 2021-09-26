@@ -12,8 +12,8 @@ Vagrant.configure("2") do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
-  config.vm.box = "com.github/wojciech11/tester-ubuntu20"
-  config.vm.define "tester-ubuntu-v3"
+  config.vm.box = "ubuntu/focal64"
+  config.vm.define "tester-ubuntu-v4"
   config.disksize.size = '120GB'
 
   # Disable automatic box update checking. If you disable this, then
@@ -73,10 +73,29 @@ Vagrant.configure("2") do |config|
   tester_dir = <<-SHELL
     mkdir -p /var/opt/tester
   SHELL
-  
-  update_apt_get= <<-SHELL
-    apt-get update
-    # apt-get upgrade -qq
+
+  update_apt_update_upgrade = <<-SHELL
+    sudo apt-get update && \
+    sudo apt-get upgrade -y
+  SHELL
+
+  install_desktop = <<-SHELL
+
+    sudo apt-get install -y --no-install-recommends ubuntu-desktop
+    sudo DEBIAN_FRONTEND=noninteractive apt-get install -yq --no-install-recommends gdm3
+    sudo bash -c "echo '/usr/sbin/gdm3' > /etc/X11/default-display-manage"
+    sudo DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true dpkg-reconfigure gdm3
+    sudo bash -c "echo set shared/default-x-display-manager gdm3 | debconf-communicate"
+    sudo usermod -a -G sudo vagrant
+
+    # Ubuntu fonts
+    sudo apt-get install -y ttf-ubuntu-font-family
+    
+    # VirtualBox guest extensions
+    sudo apt-get install -y --no-install-recommends virtualbox-guest-dkms virtualbox-guest-utils virtualbox-guest-x11
+    
+    # Network management
+    sudo apt-get install -y network-manager network-manager-gnome
   SHELL
 
   add_tester_user = <<-SHELL
@@ -144,8 +163,8 @@ Vagrant.configure("2") do |config|
     fi;
    SHELL
 
-# better when the students do it by hand
-# notice: the url is incorrect, check the android-studio version on their website
+  # better when the students do it by hand
+  # notice: the url is incorrect, check the android-studio version on their website
   install_android_studio = <<-SHELL
    if [ ! -d /home/#{TESTER_USER}/android-studio ]; then
      sudo snap install android-studio --classic
@@ -158,12 +177,14 @@ Vagrant.configure("2") do |config|
   SHELL
 
   cleanup_cache = <<-SHELL
-     apt-get -y autoremove ;
-     rm -rf /var/lib/apt/lists/* ;
+    apt-get autoremove -yqq --purge && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
   SHELL
 
    for s in [tester_dir,
-             update_apt_get,
+             update_apt_update_upgrade,
+             install_desktop,
              add_tester_user,
              install_pip,
              install_git_gui,
