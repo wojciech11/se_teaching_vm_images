@@ -1,34 +1,3 @@
-DEFAULT_USERNAME=tester
-DEFAULT_PASSWORD=tester
-
-BOXCUTTER_PATH=boxcutter/ubuntu
-# ubuntu1604-desktop
-BOXCUTTER_TEMPLATE=ubuntu2004-desktop
-
-VAGRANT_IMAGE_PREFIX=com.github/wojciech11
-
-VAGRANT_IMAGE_NAME=tester-ubuntu20
-
-boxcutter_clone_ubuntu:
-	cd boxcutter && \
-	rm -rf ubuntu && \
-	git clone https://github.com/boxcutter/ubuntu
-
-boxcutter_apply_changes:
-	cp -R boxcutter-ubuntu/ubuntu/* $(BOXCUTTER_PATH)
-
-ubuntu_desktop_build:
-	UPDATE=true && \
-	cd $(BOXCUTTER_PATH) && \
-	bin/box build $(BOXCUTTER_TEMPLATE) virtualbox ; \
-	ls box/virtualbox
-
-ubuntu_desktop_import:
-	vagrant box add \
-		boxcutter/ubuntu/box/virtualbox/$(BOXCUTTER_TEMPLATE)*.box \
-		--name $(VAGRANT_IMAGE_PREFIX)/$(VAGRANT_IMAGE_NAME) \
-	    --force
-
 ubuntu_desktop_vagrant_up:
 	cd vagrant/ubuntu && vagrant up
 
