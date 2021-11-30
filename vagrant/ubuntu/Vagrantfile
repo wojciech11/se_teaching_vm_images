@@ -98,11 +98,30 @@ Vagrant.configure("2") do |config|
     # Ubuntu fonts
     sudo apt-get install -y ttf-ubuntu-font-family
     
-    # VirtualBox guest extensions
-    sudo apt-get install -y --no-install-recommends virtualbox-guest-dkms virtualbox-guest-utils virtualbox-guest-x11
+    # VirtualBox guest extensions --no-install-recommends
+    sudo apt-get install -y virtualbox-guest-dkms virtualbox-guest-utils virtualbox-guest-x11
     
     # Network management
     sudo apt-get install -y network-manager network-manager-gnome
+  SHELL
+
+  install_xserver_drivers = <<-SHELL
+    sudo apt install -y xserver-xorg \
+                     xserver-xorg-core \
+                     xserver-xorg-input-all \
+                     xserver-xorg-input-libinput \
+                     xserver-xorg-input-wacom \
+                     xserver-xorg-legacy \
+                     xserver-xorg-video-all \
+                     xserver-xorg-video-amdgpu \
+                     xserver-xorg-video-ati \
+                     xserver-xorg-video-fbdev \
+                     xserver-xorg-video-intel \
+                     xserver-xorg-video-nouveau \
+                     xserver-xorg-video-qxl \
+                     xserver-xorg-video-radeon \
+                     xserver-xorg-video-vesa \
+                     xserver-xorg-video-vmware
   SHELL
 
   add_tester_user = <<-SHELL
@@ -197,6 +216,7 @@ Vagrant.configure("2") do |config|
   for s in [tester_dir,
              update_apt_update_upgrade,
              install_desktop,
+             install_xserver_drivers,
              add_tester_user,
              install_pip,
              install_git_gui,
