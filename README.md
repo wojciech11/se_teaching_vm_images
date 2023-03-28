@@ -2,8 +2,7 @@
 
 ## Motivation
 
-The VirtualBox provides a predictable development environment even
-if a university has Windows-based workstations.
+The VirtualBox provides a predictable development environment to run use [Ubuntu LTS](https://wiki.ubuntu.com/Releases) even if a university has Windows-based workstations.  
 
 ## Software
 
@@ -37,7 +36,7 @@ Notice: Please use *docker* to deploy, e.g., Jenkins.
 
 ## HowTo
 
-Notice. For the tips on making ubuntu more performant, please check: https://blogs.oracle.com/scoter/post/oracle-vm-virtualbox-61-3d-acceleration-for-ubuntu-1804-and-2004-virtual-machines .
+Notice. For the tips on making ubuntu more performant, please check [oracle docs](https://blogs.oracle.com/scoter/post/oracle-vm-virtualbox-61-3d-acceleration-for-ubuntu-1804-and-2004-virtual-machines).
 
 0. You need to have [Vagrant](https://www.vagrantup.com) installed
 
